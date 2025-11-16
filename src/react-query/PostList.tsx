@@ -3,7 +3,7 @@ import usePosts from "./hooks/usePosts";
 
 const PostList = () => {
   const pageSize = 3;
-  const { posts, error, isLoading, fetchNextPage, isFetchingNextPage } = usePosts({
+  const { data: posts, error, isLoading, fetchNextPage, isFetchingNextPage } = usePosts({
     pageSize,
   });
 

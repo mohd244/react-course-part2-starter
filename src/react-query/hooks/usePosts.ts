@@ -13,7 +13,7 @@ interface PostQuery {
 }
 
 const usePosts = (query: PostQuery) => {
-    const { data: posts, error, isLoading, fetchNextPage, isFetchingNextPage } = useInfiniteQuery<Post[], Error>({
+    return useInfiniteQuery<Post[], Error>({
         queryKey: ['posts', query],
         queryFn: ({ pageParam = 1 }) => axios.get<Post[]>('https://jsonplaceholder.typicode.com/posts', {
             params: {
@@ -32,8 +32,6 @@ const usePosts = (query: PostQuery) => {
             }
         }
     })
-
-    return { posts, error, isLoading, fetchNextPage, isFetchingNextPage }
 }
 
 export default usePosts;
