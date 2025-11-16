@@ -2,27 +2,19 @@ import { useState } from "react";
 import usePosts from "./hooks/usePosts";
 
 const PostList = () => {
-  const [selectedUserId, setSelectedUserId] = useState<number>();
-  const { posts, error, isLoading } = usePosts(selectedUserId);
+  const pageSize = 10;
+  const [page, setPage] = useState<number>(1);
+  const { posts, error, isLoading } = usePosts({
+    page,
+    pageSize,
+  });
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
 
-  const handleUserSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const userId = parseInt(e.target.value);
-    console.log("Selected user ID:", userId);
-    setSelectedUserId(userId);
-  }
-
   return (
     <>
       <h3>Posts</h3>
-      <select className="form-select mb-3" onChange={handleUserSelect} value={selectedUserId}>
-        <option value={undefined}>All Users</option>
-        <option value="1">User 1</option>
-        <option value="2">User 2</option>
-        <option value="3">User 3</option>
-      </select>
       <ul className="list-group">
         {posts?.map((post) => (
           <li key={post.id} className="list-group-item">
@@ -30,6 +22,21 @@ const PostList = () => {
           </li>
         ))}
       </ul>
+      <div className="mt-3">
+        <button
+          className="btn btn-primary me-2"
+          onClick={() => setPage((old) => Math.max(old - 1, 1))}
+          disabled={page === 1}
+        >
+          Previous
+        </button>
+        <button
+          className="btn btn-primary"
+          onClick={() => setPage((old) => old + 1)}
+        >
+          Next
+        </button>
+      </div>
     </>
   );
 };
